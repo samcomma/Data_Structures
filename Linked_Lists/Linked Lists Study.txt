@@ -1,0 +1,310 @@
+// LINKED LISTS
+// -----------------------------------------------------------------------------
+
+/*
+SINGLE LINKED LIST
+------------------------
+
+In computer science, a singly-linked list is a data structure that holds a sequence of linked nodes. 
+Each node, in turn, contains data and a pointer, which can point to another node.
+
+A linked list, thus, is nothing more than objects nested deeply inside of each other.
+The next property of each node object in the list is a reference to the next node object.
+The head is a reference to the first node in the chain. In other words, the head property on the outermost object of the linked list points to first item in the list. 
+Each item in the list is accessed through the next property of the item before it.
+
+https://code.tutsplus.com/articles/data-structures-with-javascript-singly-linked-list-and-doubly-linked-list--cms-23392
+
+To implement a singly-linked list we will define two constructors:
+1) Node
+2) SinglyList
+
+*/
+
+function Node(data) {
+	this.data = data
+	this.next = null
+}
+
+function SingleList() {
+	this.head = null
+	this.length = 0
+}
+
+
+/*
+Next we will create 3 methods for SinglyList:
+1) Add a Node (value)
+2) Search for a Node (position)
+3) Remove a Node (position)
+*/
+
+// ADD A NODE
+
+SingleList.prototype.add = function(data) {
+	var nodeToAdd = new.Node(data)
+	var	currentNode = this.head
+
+	//First Case: empty list
+	if (!currentNode) {
+		this.head = nodeToAdd
+		this.length++
+
+		return nodeToAdd
+	}
+
+	//Second Case: non-empty list
+	while (currentNode.next) {
+		currentNode = currentNode.next
+	}
+	currentNode.next = nodeToAdd
+	this.length++
+
+	return nodeToAdd
+};
+
+
+
+// SEARCH FOR A NODE
+
+SingleList.prototype.searchNodeAt = function(position) {
+	var currentNode = this.head
+	var	length = this.length
+	var	count = 1
+	var	message = {failure: 'Failure: The node does not exist in this list.'}
+
+	// First Case: an invalid position
+	if (length === 0 || position < 1 || position > length) {
+		throw new Error(message.failure)
+	}
+
+	//Second Case: a valid position
+	while (count < position) {
+		currentNode = currentNode.next
+		count++
+	}
+
+	return currentNode
+};
+
+
+
+// REMOVE A NODE
+
+
+SingleList.prototype.remove = function(position) {
+	var currentNode = this.head
+	var	length = this.length
+	var	count = 0 // count is 0 as opposed to 1 as in searchNodeAt function.
+	var	message = {failure: 'Failure: The node does not exist in this list.'}
+
+	var beforeNodeToDelete = null
+	var NodeToDelete = null
+	var deletedNode = null
+
+	// First Case: an invalid position
+	if (position < 0 || position > length) {
+		throw new Error(message.failure)
+	}
+
+	// Second Case: the first node(head) is removed
+	if (position === 1) {
+		this.head = currentNode.next
+		deletedNode = currentNode
+		currentNode = null
+		this.length--
+
+		return deletedNode
+	}
+
+	// Third Case: any other node is removed
+	while (count < position) {
+		beforeNodeToDelete = currentNode
+		nodeToDelete = currentNode.next
+		count++
+	}
+
+	beforeNodeToDelete.next = nodeToDelete.next
+	deletedNode = nodeToDelete
+	nodeToDelete = null
+	this.length--
+
+	return deletedNode
+};
+
+
+
+// ADDITIONAL FUNCTIONS FOR SINGLT LINKED LISTS
+// -----------------------------------------------------------------------
+
+// REVERSE A SINGLY LINKED LIST (NO LOOP):
+
+// Quick Line on Method: 
+//   - Iterate through linked list with three-pointers previous, current, next.
+//   - While iterating at each step reverse the current link’s direction.
+
+// The while loop is the key part to understand here. A little tricky but it is correct.
+
+SingleList.prototype.reverse = function() {
+
+	// Check: If the list isof length one or less, return nothing.
+	if(!this.head || !this.head.next) {
+		return;
+	}
+
+	var current = this.head
+	var next = null
+	var prev = null
+
+	while (current) {
+		next = current.next
+		current.next = prev
+		prev = current
+		current  = next
+	}
+
+	this.head = prev
+}
+
+
+
+
+
+/*
+DOUBLE LINKED LIST
+------------------------
+
+A doubly-linked list takes all the functionality of a singly-linked list and extends it for bi-directional movement 
+in a list. We can traverse, in other words, a linked list from the first node in the list to the last node in the 
+list; and we can traverse from the last node in the list to the first node in the list. 
+
+To implement a doubly-linked list we will again define two constructors that are slightly different than 
+for singly-linked lists:
+1) Node
+2) DoublyList
+*/
+
+
+function Node(data) {
+	this.data = data
+	this.previous = null
+	this.next = null
+
+}
+
+function DoublyList() {
+	this._length = 0
+	this.head = null
+	this.tail = null
+}
+
+/*
+Next we will create 3 methods for DoublyList, methods 1) and 3) are different, method 2) is the 
+same as for Singly-Linked List:
+1) Add a Node (value)
+2) Search for a Node (position)
+3) Remove a Node (position)
+*/
+
+// ADD A NODE
+
+DoublyList.prototype.add = function(value) {
+	var node = new.Node(value)
+
+	
+	if (this._length) {
+		this.tail.next = node
+		node.previous = this.tail
+		this.tail = node
+	} else {
+		this.head = node
+		this.tail = node
+	}
+
+	
+	this._length++
+
+	return node
+};
+
+
+
+// SEARCH FOR A NODE
+
+DoublyList.prototype.searchNodeAt = function(position) {
+	var currentNode = this.head
+	var	length = this._length
+	var	count = 1
+	var	message = {failure: 'Failure: The node does not exist in this list.'}
+
+	// First Case: an invalid position
+	if (length === 0 || position < 1 || position > length) {
+		throw new Error(message.failure)
+	}
+
+	//Second Case: a valid position
+	while (count < position) {
+		currentNode = currentNode.next
+		count++
+	}
+
+	return currentNode
+};
+
+
+
+// REMOVE A NODE
+
+
+DoublyList.prototype.remove = function(position) {
+	var currentNode = this.head
+	var	length = this._length
+	var	count = 1 // count is 1 as opposed to 0 as in SinglyList remove function.
+	var	message = {failure: 'Failure: The node does not exist in this list.'}
+
+	var beforeNodeToDelete = null
+	var afterNodeToDelete = null
+	var NodeToDelete = null
+	var deletedNode = null
+
+	// First Case: an invalid position
+	if (length === 0 || position < 0 || position > length) {
+		throw new Error(message.failure)
+	}
+
+	// Second Case: the first node(head) is removed
+	if (position === 1) {
+		this.head = currentNode.next
+
+		// Second Case (1): there is a second node
+		if (!this.head) {
+			this.head.previous = null
+		// Second Case (2): there is a second node
+		} else {
+			this.tail = null
+		}
+	// Third Case: the last node is removed
+	} else if (position === this._length) {
+		this.tail = this.tail.previous
+		this.tail.next = null
+	// Fourth Case: a middle node is removed
+	} else {
+		while (count < position) {
+			currentNode = currentNode.next
+			count++
+		}
+		
+		beforeNodeToDelete = currentNode.previous;
+        nodeToDelete = currentNode;
+        afterNodeToDelete = currentNode.next;
+ 
+        beforeNodeToDelete.next = afterNodeToDelete;
+        afterNodeToDelete.previous = beforeNodeToDelete;
+        deletedNode = nodeToDelete;
+        nodeToDelete = null;
+	}
+
+	this._length--
+
+	return deletedNode
+};

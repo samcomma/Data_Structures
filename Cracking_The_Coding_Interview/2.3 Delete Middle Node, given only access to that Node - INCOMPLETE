@@ -1,0 +1,31 @@
+/*
+Problem 2.2 DELETE MIDDLE NODE (GIVEN ONLY ACCESS TO THAT NODE): 
+Implement an algorithm to delete a node in the middle of a singly linked list, given only access to that node.
+*/
+
+/* 
+APPROACH
+	What if there are an even number of Nodes? 
+	What if the list is of length 1?
+
+*/
+
+
+// SOLUTION
+
+
+
+
+
+// RECURSIVE SOLUTION
+
+
+
+// TESTS
+
+
+
+
+/* NOTES
+	
+*/

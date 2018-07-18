@@ -1,0 +1,110 @@
+// BINARY HEAPS (HEAPS)
+// -----------------------------------------------------------------------------
+
+/*
+In computer science, a heap is a specialized tree-based data structure that satisfies the heap property: 
+if P is a parent node of C, then the key (the value) of P is either greater than or equal to (in a max heap) 
+or less than or equal to (in a min heap) the key of C. 
+The node at the "top" of the heap (with no parents) is called the root node.
+
+There are 2 types of Heaps:
+1) Max
+2) Min
+
+USES OF A HEAP:
+
+Use it whenever you need quick access to the largest (or smallest) item, because that item will always be the 
+first element in the array or at the root of the tree.
+However, the remainder of the array is kept partially unsorted. Thus, instant access is only possible to the 
+largest (smallest) item. 
+
+Insertions are fast, so it's a good way to deal with incoming events or data and always have access to the earliest/biggest.
+Useful for priority queues, schedulers (where the earliest item is desired), etc...
+A heap is a tree where a parent node's value is larger than that of any of its descendant nodes.
+If you think of a heap as a binary tree stored in linear order by depth, with the root node first (then the children of 
+that node next, then the children of those nodes next); then the children of a node at index N are at 2N+1 and 2N+2. This 
+property allows quick access-by-index. And since heaps are manipulated by swapping nodes, this allows for in-place sorting.
+
+
+
+
+GREAT EXPLANATION: http://eloquentjavascript.net/1st_edition/appendix2.html
+
+The below notes are taken from that:
+
+Array element 1 is the root of the tree, array element 2 and 3 are its children, and in general array element X 
+has children X * 2 and X * 2 + 1. You can see why this structure is called a 'heap'. Note that this array starts 
+at 1, while JavaScript arrays start at 0. The heap will always keep the smallest element in position 1, and make 
+sure that for every element in the array at position X, the element at X / 2 (round down) is smaller.
+
+Here is the full code of a binary heap implementation. Two things to note are that, instead of directly comparing 
+the elements put into the heap, a function (scoreFunction) is first applied to them, so that it becomes possible 
+to store objects that can not be directly compared.
+
+Also, because JavaScript arrays start at 0, and the parent/child calculations use a system that starts at 1, there 
+are a few strange calculations to compensate.
+*/
+
+
+function Heap(scoreFunction) {
+	this.content = []
+	this.scoreFunction = scoreFunction
+}
+
+Heap.prototype.push = function(data) {
+	this.content.push(data)
+	this.bubbleUp(this.content.length - 1) // allows newly added data element to bubble up to position.
+}
+
+
+// This below method confuses me slightly. But I think that this.content[0] is what is being popped (not by actually popping) out.
+// Then the last element is removed (by popping) and allowed to sink through the heap. This is done to reorganize the heap after 
+// the 'result' has been popped/removed. The result is then returned similar to the usual pop method.
+
+Heap.prototype.pop = function() {
+	var result = this.content[0]  	// store the first element so we can return it later.
+	var end = this.content.pop() 	// get elemnt at end of array.
+
+	if (this.content.length > 0) {	// If there are elements remaining, put the end element at the start and let it sink down.
+		this.content[0] = end
+		this.sinkDown[0]
+	}
+	return result
+}
+
+
+
+Heap.prototype.remove = function(node) {
+	for (var i = 0; i < this.content.length; i++) {
+      if (this.content[i] != node) continue;
+      // When it is found, the process seen in 'pop' is repeated
+      // to fill up the hole.
+      var end = this.content.pop();
+      // If the element we popped was the one we needed to remove,
+      // we're done.
+      if (i == this.content.length - 1) break;
+      // Otherwise, we replace the removed element with the popped
+      // one, and allow it to float up or sink down as appropriate.
+      this.content[i] = end;
+      this.bubbleUp(i);
+      this.sinkDown(i);
+      break;
+    }
+}
+
+
+
+Heap.prototype.size = function() {
+	return this.content.length
+}
+
+
+
+Heap.prototype.bubbleUp = function() {
+	
+}
+
+
+Heap.prototype.sinkDown = function() {
+	
+}

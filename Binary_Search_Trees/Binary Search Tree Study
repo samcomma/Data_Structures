@@ -1,0 +1,281 @@
+// BINARY TREES
+// ---------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------
+
+// A Binary Search Tree is a special form of a binary tree. 
+// The value in each node must be greater than (or equal to) any values in its left subtree but less than (or equal to) any values in its right subtree.
+
+// A Binary Tree is one of the most typical tree structure. As the name suggests, 
+// a binary tree is a tree data structure in which each node has at most two children, which are referred to as the left child and the right child.
+// Nodes which have lesser value are stored on the left while the nodes with higher value are stored at the right.
+
+
+// Implement Binary Search Tree Node:
+
+function Node(data) {
+	this.data = data
+	this.left = null 
+	this.right = null
+}
+
+
+// Implement Binary Search Tree:
+
+function BinarySearchTree() {
+	this.root = null
+}
+
+
+// Insert Node to Tree:
+
+BinarySearchTree.prototype.insert = function(data) {
+	var newNode = new Node(data)
+
+	if (this.root = null) { // If there is no root yet then this function makes the node the root, if there is then this function calls the insertNode function.
+		this.root = newNode
+	} else {
+		this.insertNode(this.root, newNode)
+	}
+};
+
+// This method moves over the tree to find the location to insert a node with a given data. 
+// It compares the given data with the data of current node and moves left or right accordingly 
+// and recur until it finds a correct node with a null value where new node can be added.
+BinarySearchTree.prototype.insertNode = function(node, newNode) { 
+	if (newNode.data < node.data) { // if data is less than the node data move left of the tree.
+		if (node.left === null) {
+			node.left = newNode
+		} else {
+			this.insertNode(node.left, newNode) // if left node is not null, recurr until null is found.
+	} else {
+		if (node.right === null) { // if data is more than the node data move right of the tree.
+			node.right = newNode
+		} else {
+			this.insertNode(node.right, newNode) // if right node is not null, recurr until null is found.
+	}
+};
+
+
+// Remove Node from Tree:
+
+// Helper method that calls the removeNode with a given data
+BinarySearchTree.prototype.remove = function(data) {
+	this.root = this.removeNode(this.root, data)
+}
+
+// Method to remove node with a given data, it recurrs over the tree to ind the data and removes it.
+BinarySearchTree.prototype.removeNode = function(node, key) {
+	
+	if (node === null) {
+		return null
+	} else if (key < node.data) { // if data to be deleted is less than roots data then move to left subtree
+		node.left = this.removeNode(node.left, key)
+		return node
+	} else if (key > node.data) { // if data to be deleted is more than roots data then move to right subtree
+		node.right = this.removeNode(node.right, key)
+		return node
+	} else {
+		if (node.left === null && node.right === null) { // deleting node with no children
+			node = null
+			return node
+		} 
+		if (node.left === null) {  // deleting node with one child
+			node = node.right
+			return node
+		} else if (node.right === null) {
+			node = node.left
+			return node
+	}
+
+	// Deleting node with two children, min node of right subtree is stored in aux (this is found using findMinNode helper method.)
+	// In order to delete a node with two children we find the node with minimum value in its right subtree and replace this 
+	// node with the minimum valued node and remove the minimum valued node from the tree
+	var aux = this.findMinNode(node.right)
+	node.data = aux.data
+
+	node.right = this.removeNode(node.right, aux.data)
+	return node
+}
+
+
+
+// HELPER METHODS FOR BINARY SEARCH TREES
+// ---------------------------------------------------------------------------------
+
+// Searches for a node with a min value starting from 'node'.
+BinarySearchTree.prototype.findMinNode = function(data) { 
+	
+	if (node.left === null) { // if left of a node is null then it must be minimum node. Not 100% sure why this is.
+	} else {
+		return this.findMinNode(node.left)
+	}
+}
+
+
+// Returns the root node of a tree.
+BinarySearchTree.prototype.getRootNode = function() { 
+	return this.root
+}
+
+
+// Searches the tree for a node with the given data (starting at 'node' I believe)
+BinarySearchTree.prototype.search = function(node, data) { 
+	
+	if (node === null) { // empty tree
+		return null
+	} else if (data < node.data) { // if data less than node's data move left. 
+		return this.search(node.left, data)
+	} else if (data > node.data) { // if data more than node's data move right.
+		return this.search(node.right, data)
+	} else {	// else the data is equal to the node data and the node has been found. So return node.
+		return node
+	}
+}
+
+
+
+
+// BINARY TREE TRAVERSAL
+// ---------------------------------------------------------------------------------
+
+// INORDER TRAVERSAL
+// ----------------------
+// It performs inorder traversal of a tree starting from a given node.
+
+// Algorithm:
+// - Traverse the left subtree i.e perform inorder on left subtree
+// - Visit the root
+// - Traverse the right subtree i.e perform inorder on right subtree
+
+BinarySearchTree.prototype.inorder = function(node) { 
+	if (node !== null) {
+		this.inorder(node.left)
+		console.log(node.data)
+		this.inorder(node.right)
+	}
+}
+
+// PREORDER TRAVERSAL
+// ----------------------
+// It performs preorder traversal of a tree starting from a given node.
+
+// Algorithm:
+// - Visit the root
+// - Traverse the left subtree i.e perform inorder on left subtree
+// - Traverse the right subtree i.e perform inorder on right subtree
+
+BinarySearchTree.prototype.preorder = function(node) { 
+	if (node !== null) {
+		console.log(node.data)
+		this.inorder(node.left)
+		this.inorder(node.right)
+	}
+}
+
+
+// POSTORDER TRAVERSAL
+// ----------------------
+// It performs postorder traversal of a tree starting from a given node.
+
+// Algorithm:
+// - Traverse the left subtree i.e perform inorder on left subtree
+// - Traverse the right subtree i.e perform inorder on right subtree
+// - Visit the root
+
+BinarySearchTree.prototype.postorder = function(node) { 
+	if (node !== null) {
+		this.inorder(node.left)
+		this.inorder(node.right)
+		console.log(node.data)
+	}
+}
+
+
+
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+
+// ABOVE METHODS IN ACTION:
+
+// create an object for the BinarySearchTree
+var BST = new BinarySearchTree();
+ 
+// Inserting nodes to the BinarySearchTree
+BST.insert(15);
+BST.insert(25);
+BST.insert(10);
+BST.insert(7);
+BST.insert(22);
+BST.insert(17);
+BST.insert(13);
+BST.insert(5);
+BST.insert(9);
+BST.insert(27);
+                         
+//          15
+//         /  \
+//        10   25
+//       / \   / \
+//      7  13 22  27
+//     / \    /
+//    5   9  17 
+ 
+var root = BST.getRootNode();
+             
+// prints 5 7 9 10 13 15 17 22 25 27
+BST.inorder(root);
+             
+// Removing node with no children 
+BST.remove(5);
+             
+             
+//          15
+//         /  \
+//        10   25
+//       / \   / \
+//      7  13 22  27
+//       \    /
+//        9  17 
+             
+                         
+var root = BST.getRootNode();
+             
+// prints 7 9 10 13 15 17 22 25 27
+BST.inorder(root);
+             
+// Removing node with one children 
+BST.remove(7);
+             
+//          15
+//         /  \
+//        10   25
+//       / \   / \
+//      9  13 22  27
+//            /
+//           17 
+             
+             
+var root = BST.getRootNode();
+ 
+// prints 9 10 13 15 17 22 25 27
+BST.inorder(root);
+             
+// Removing node with two children 
+BST.remove(15);
+     
+//          17
+//         /  \
+//        10   25
+//       / \   / \
+//      9  13 22  27
+ 
+var root = BST.getRootNode();
+console.log("inorder traversal");
+ 
+// prints 9 10 13 17 22 25 27
+BST.inorder(root);
+             
+console.log("postorder traversal");
+BST.postorder(root);
+console.log("preorder traversal");
+BST.preorder(root);

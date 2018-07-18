@@ -1,0 +1,132 @@
+// SETS
+// -----------------------------------------------------------------------------
+
+/*
+A Set is an abstract data type that can store certain values, without any particular order, and no repeated values. 
+It is a computer implementation of the mathematical concept of a finite Set.
+
+The Set data structure is usually used to test whether elements belong to set of values. Rather then only containing elements, 
+Sets are more used to perform operations on multiple values at once with methods such as union, intersect, etc…
+*/
+
+
+// IMPLEMENTATION
+
+function Set() {
+	this.values = []
+	this.numberOfValues = 0
+}
+
+
+// SET METHODS:
+// -------------------------
+
+
+// ADD METHOD:
+
+Set.prototype.add = function(data) {
+	if (!this.values.indexOf[data]) {
+		this.values.push(data)
+		this.numberOfValues++
+	}
+}
+
+
+
+// REMOVE METHOD:
+
+Set.prototype.remove = function(data) {
+	var index = this.values.indexOf[data]
+
+	if (index) {
+		this.values.splice(index, 1)
+		this.numberOfValues--
+	}
+}
+
+
+
+// CONTAINS METHOD:
+
+Set.prototype.contains = function(data) {
+	return this.values.indexOf(data) !== -1;	// will return true if indexOf is not -1, false otherwise.
+}
+
+
+// UNION METHOD:
+
+Set.prototype.union = function(set) {
+	var newSet = new Set()	
+
+	set.values.forEach(function(data) {		// note: data can be given any name here.
+		newSet.add(data)
+	})
+
+	this.values.forEach(function(data) {
+		newSet.add(data)
+	})
+	return newSet
+}
+
+
+
+// INTERSECT METHOD:
+
+Set.prototype.intersect = function(set) {
+	var newSet = new Set()
+
+	this.values.forEach(function(data) {	// note: data can be given any name here.
+		if (set.contains(data)) {
+			newSet.add(data)
+		}
+	})
+	return newSet
+}
+
+
+
+// DIFFERENCE METHOD:
+
+Set.prototype.difference = function(set) {
+	var newSet = new Set()
+
+	this.values.forEach(function(data) {	// note: data can be given any name here.
+		if (!set.contains(data)) {
+			newSet.add(data)
+		}
+	})
+	return newSet	
+}
+
+
+
+
+// IS SUBSET METHOD:
+
+Set.prototype.isSubset = function(set) {
+
+  return set.values.every(function(value) { 	// 'every' method is key here.
+    return this.contains(value)
+  }, this)  
+}
+
+
+
+// LENGTH METHOD:
+
+Set.prototype.length = function() {
+  return this.numberOfValues
+}
+
+
+
+// PRINT METHOD: 
+
+Set.prototype.print = function() {
+  console.log(this.values.join(' '))
+}
+
+
+
+
+
